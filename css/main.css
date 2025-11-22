@@ -27,15 +27,21 @@
   box-sizing: border-box; /* Kluczowe dla gridów i paddingów */
 }
 
-html,
-body {
+html, body {
   margin: 0;
   padding: 0;
   background: var(--bg-color);
   color: var(--text-color);
   font-family: var(--font-sans);
   overflow-x: hidden;
-  cursor: none !important; /* Ukrywamy systemowy kursor */
+  /* Desktop: ukrywamy kursor */
+  cursor: none !important;
+  /* MOBILE: Przywracamy kursor systemowy (dotyk) */
+}
+@media (max-width: 768px) {
+  html, body {
+    cursor: auto !important;
+  }
 }
 
 /* Blokada scrolla (gdy menu otwarte lub preloader aktywny) */
@@ -91,6 +97,11 @@ body.nav-open {
 }
 .cursor.active {
   transform: translate(-50%, -50%) scale(4);
+}
+@media (max-width: 768px) {
+  .cursor {
+    display: none !important;
+  }
 }
 
 /* =========================================
