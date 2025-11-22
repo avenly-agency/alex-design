@@ -230,6 +230,9 @@ body.nav-open {
 .menu-link:nth-child(3) {
   transition-delay: 0.3s;
 }
+.menu-link:nth-child(4) {
+  transition-delay: 0.3s;
+}
 
 /* --- Fix dla Otwartego Menu (Kluczowe!) --- */
 /* Gdy menu jest otwarte, wyłączamy difference mode, żeby biały był biały na czarnym tle */
