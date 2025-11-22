@@ -45,12 +45,17 @@ html, body {
     font-family: var(--font-sans);
     overflow-x: hidden;
     
+    /* FIX: To likwiduje biały pasek przy przewijaniu na górze/dole */
+    overscroll-behavior-y: none; 
+
     /* Desktop: ukrywamy kursor */
     cursor: none !important; 
 
-    /* MOBILE: Przywracamy kursor systemowy (dotyk) */
+    /* MOBILE: Przywracamy kursor i poprawiamy tło */
     @include mobile {
         cursor: auto !important;
+        /* Opcjonalnie: jeśli większość strony jest ciemna, zmień na #000 */
+        /* background-color: #000; */ 
     }
 }
 
@@ -268,35 +273,50 @@ body.nav-open .menu-toggle {
 	justify-content: center;
 	padding: 0 var(--spacing-container);
 
+	/* --- Hero Typography Fix --- */
 	&__title {
-		font-family: var(--font-serif);
-		font-size: clamp(3rem, 14vw, 16rem);
-		line-height: 0.85;
-		color: var(--text-color);
-		display: flex;
-		flex-direction: column;
+    font-family: var(--font-serif);
+    /* Desktop: Duży font, mała interlinia (zwarte) */
+    font-size: clamp(3rem, 13vw, 16rem);
+    line-height: 0.85; 
+    color: var(--text-color);
+    display: flex;
+    flex-direction: column;
 
-		.italic {
-			font-style: italic;
-			font-weight: 300;
-			margin-left: 10vw;
-			@include mobile {
-				margin-left: 0;
-			}
-		}
+    /* MOBILE FIX: Większy odstęp, żeby litery na siebie nie wchodziły */
+    @include mobile {
+        line-height: 1.1; /* Zwiększamy z 0.85 na 1.1 */
+        font-size: clamp(3rem, 14vw, 6rem); /* Trochę mniejszy max rozmiar */
+        gap: 0.5rem; /* Fizyczny odstęp między rzędami tekstu */
+    }
 
-		.right {
-			text-align: right;
-			font-family: var(--font-sans);
-			font-weight: 800;
-			font-size: 0.5em;
-			letter-spacing: -0.02em;
-			text-transform: uppercase;
-			@include mobile {
-				text-align: left;
-			}
-		}
-	}
+    .italic {
+        font-style: italic;
+        font-weight: 300;
+        margin-left: 10vw;
+        
+        @include mobile { 
+            margin-left: 0; 
+            /* Opcjonalnie: lekko odsuwamy italic od reszty */
+            margin-top: 0.2rem;
+        }
+    }
+
+    .right {
+        text-align: right;
+        font-family: var(--font-sans);
+        font-weight: 800;
+        font-size: 0.4em; /* Skalujemy względem rodzica */
+        letter-spacing: -0.02em;
+        text-transform: uppercase;
+        
+        @include mobile { 
+            text-align: left; 
+            font-size: 1rem; /* Sztywny rozmiar na mobilu dla czytelności */
+            margin-top: 1rem; /* Odstęp od tytułu */
+        }
+    }
+}
 }
 
 /* --- Marquee --- */
@@ -584,6 +604,7 @@ body.nav-open .menu-toggle {
 }
 
 /* --- Footer --- */
+/* --- FOOTER STYLES --- */
 .footer {
     background-color: #000;
     color: #fff;
@@ -591,12 +612,13 @@ body.nav-open .menu-toggle {
     margin-top: 4rem;
     overflow: hidden;
 
+    /* 1. GÓRNA CZĘŚĆ (CTA + Button) */
     &__content {
         display: flex;
         justify-content: space-between;
         align-items: center;
         margin-bottom: 8rem;
-        
+
         @include mobile {
             flex-direction: column;
             gap: 4rem;
@@ -608,7 +630,8 @@ body.nav-open .menu-toggle {
         font-family: var(--font-serif);
         font-size: clamp(3rem, 10vw, 8rem);
         line-height: 0.9;
-        
+        margin: 0;
+
         .italic {
             font-style: italic;
             font-weight: 300;
@@ -616,49 +639,88 @@ body.nav-open .menu-toggle {
         }
     }
 
+    /* 2. DOLNA CZĘŚĆ (Copyright + Socials) */
     &__bottom {
         border-top: 1px solid rgba(255, 255, 255, 0.2);
         padding-top: 2rem;
         
-        /* Układ kontenera dolnego: Copyright po lewej, Sociale po prawej */
         display: flex;
-        justify-content: space-between;
-        align-items: center;
-        
+        justify-content: space-between; /* Rozrzuca elementy na boki */
+        align-items: flex-end; /* Wyrównanie do dołu */
+
         font-family: var(--font-sans);
         font-size: 0.9rem;
         text-transform: uppercase;
         color: #888;
 
         @include mobile {
-            flex-direction: column-reverse; /* Sociale na górze, Copyright na dole */
-            gap: 1.5rem;
+            flex-direction: column-reverse; /* Sociale na górę na telefonie */
+            gap: 2rem;
             align-items: center;
             text-align: center;
         }
     }
 
-    /* Stylizacja kontenera z linkami Social Media */
+    /* Grupa Copyright + Made by */
+    &__meta {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+        
+        .made-by {
+            font-size: 0.75rem;
+            opacity: 0.6;
+            
+            a { 
+                color: #fff; 
+                text-decoration: none;
+                border-bottom: 1px solid rgba(255,255,255,0.3);
+                &:hover { opacity: 0.8; }
+            }
+        }
+    }
+
+    /* Linki Social Media */
     &__socials {
         display: flex;
-        gap: 2rem; /* Odstęp między linkami */
+        gap: 2rem;
 
         @include mobile {
             gap: 1.5rem;
         }
 
         a {
-            color: #fff; /* Białe linki */
+            color: #fff;
             text-decoration: none;
-            position: relative;
             transition: color 0.3s ease;
 
-            /* Hover: lekkie przyciemnienie */
             &:hover {
                 color: #ccc;
             }
         }
     }
+}
+
+/* Styl Guzika (jeśli go jeszcze nie masz) */
+.btn-circle {
+    display: flex;
+    justify-content: center; align-items: center;
+    text-align: center;
+    width: 180px; height: 180px;
+    border-radius: 50%;
+    background-color: #fff;
+    color: #000;
+    text-decoration: none;
+    font-family: var(--font-sans);
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 1.2rem;
+    transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+
+    &:hover {
+        transform: scale(1.15) rotate(-5deg);
+    }
+    span { position: relative; z-index: 2; }
 }
 
 .btn-circle {
